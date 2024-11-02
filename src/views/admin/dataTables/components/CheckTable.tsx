@@ -35,6 +35,7 @@ export default function CheckTable(props: { tableData: any }) {
 		columnHelper.accessor('name', {
 			id: 'name',
 			header: () => (
+
 				<Text
 					justifyContent='space-between'
 					align='center'

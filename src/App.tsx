@@ -4,6 +4,8 @@ import {} from 'react-router-dom';
 import AuthLayout from './layouts/auth';
 import AdminLayout from './layouts/admin';
 import RTLLayout from './layouts/rtl';
+import ActionLayout from './layouts/action';
+
 import {
   ChakraProvider,
   // extendTheme
@@ -25,6 +27,8 @@ export default function Main() {
             <AdminLayout theme={currentTheme} setTheme={setCurrentTheme} />
           }
         />
+        <Route path="action/*" element={<ActionLayout  />} />
+
         <Route
           path="rtl/*"
           element={

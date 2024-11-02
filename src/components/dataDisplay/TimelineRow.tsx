@@ -1,32 +1,48 @@
-import { Box, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/react'; 
-export default function TimelineRow(props:{logo:any, title:string, date:string, color:string, index:number,arrLength:number}) {
-	const { logo, title, date, color, index, arrLength } = props;
+import { Avatar, Box, Button, Center, Flex, FormLabel, IconButton, Input, Select, Text, useColorModeValue } from '@chakra-ui/react';
+import Usa from 'assets/img/dashboards/usa.png';
+import { LuBadgePlus, LuFilePlus, LuPhone, LuPlus, LuPlusCircle } from "react-icons/lu"
+import {CheckIcon, DownloadIcon, AddIcon, ChatIcon } from '@chakra-ui/icons'
+import { Icon } from "@chakra-ui/react"
+import ActivityMenu from 'views/action/addAction/activityMenu';
+import { useState } from 'react';
+
+
+export default function TimelineRow(props: { logo: any, title: any, date: any, color: string, index: number, arrLength: number,clickTimeLine:any,timeLineIcon:any,inputActivity:any,handleInputChange: (value: string,index:any) => void;inputActivityPlaceHolder:string }) {
+	const { logo, title, date, color, index, arrLength,clickTimeLine ,timeLineIcon,inputActivity,handleInputChange,inputActivityPlaceHolder} = props;
 	const textColor = useColorModeValue('gray.700', 'white.300');
 	const bgIconColor = useColorModeValue('white.300', 'gray.700');
 
 	return (
-		<Flex alignItems='center' minH='78px' justifyContent='start' mb='5px'>
-			<Flex direction='column' h='100%'>
-				<Icon
-					as={logo}
-					bg={bgIconColor}
-					color={color}
-					h={'30px'}
-					w={'26px'}
-					pe='6px'
-					zIndex='1'
-					position='relative'
-					right={document.documentElement.dir === 'rtl' ? '-8px' : ''}
-					left={document.documentElement.dir === 'rtl' ? '' : '-8px'}
-				/>
-				<Box w='2px' bg='gray.200' h={index === arrLength - 1 ? '15px' : '100%'} />
+		<Flex alignItems='center' minH='78px' justifyContent='start' mb='1px'>
+			<Flex direction='column' h='100%' justify="center">
+				{ 
+				 <IconButton  variant="outline" rounded="full" aria-label="Search database">
+					<ActivityMenu clickTimeLine={clickTimeLine} timeLineIcon={timeLineIcon} inputActivity={inputActivity}></ActivityMenu>
+			    </IconButton>
+				
+				}
+		{/* 		<Flex me='-16px' mt='1px' >
+					<FormLabel htmlFor='balance'>
+						<Avatar size="sm" src={Usa} />
+					</FormLabel>
+					<Select id='balance' variant='mini' mt='1px' me='0px' defaultValue='usd'>
+						<option value='usd'>USD</option>
+						<option value='eur'>EUR</option>
+						<option value='gba'>GBA</option>
+					</Select>
+				</Flex> */}
+				<Box w='2px' bg='gray.300' alignSelf="center" h={index === arrLength - 1 ? '36px' : '36px'} />
 			</Flex>
-			<Flex direction='column' justifyContent='flex-start' h='100%'>
+			<Flex direction='column' alignItems="center" mb="10px" h='100%'>
 				<Text fontSize='sm' color={textColor} fontWeight='bold'>
 					{title}
 				</Text>
+
+				{inputActivityPlaceHolder&&
+				<Input  onChange={(e) => handleInputChange(e.target.value, index)} variant="outline" placeholder={inputActivityPlaceHolder} ></Input>
+				}
 				<Text fontSize='sm' color='gray.400' fontWeight='normal'>
-					{date}
+					
 				</Text>
 			</Flex>
 		</Flex>

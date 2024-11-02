@@ -6,7 +6,11 @@ import Project2 from 'assets/img/profile/Project2.png';
 import Project3 from 'assets/img/profile/Project3.png';
 // Custom components
 import Card from 'components/card/Card';
+import { useState } from 'react';
 import Project from 'views/admin/profile/components/Project';
+import { useEffect, useRef } from 'react';
+import TopicHeader from './TopicHeader';
+import styled from 'styled-components';
 
 export default function Projects(props: { [x: string]: any }) {
 	const { ...rest } = props;
@@ -14,38 +18,69 @@ export default function Projects(props: { [x: string]: any }) {
 	const textColorPrimary = useColorModeValue('secondaryGray.900', 'white');
 	const textColorSecondary = 'gray.400';
 	const cardShadow = useColorModeValue('0px 18px 40px rgba(112, 144, 176, 0.12)', 'unset');
+	const projects = [
+		{ image: Project1, ranking: '3', link: '#', title: '3 günlük Bodrum tatili',userName:"Adela Parkson" },
+		{ image: Project2, ranking: '2', link: '#', title: '2 günde Bodrum' ,userName:"Adela Parkson" },
+		{ image: Project3, ranking: '1', link: '#', title: 'Günübirlik Bodrum' ,userName:"Adela Parkson" },
+		{ image: Project1, ranking: '3', link: '#', title: '3 günlük Bodrum tatili' ,userName:"Adela Parkson" },
+		{ image: Project2, ranking: '2', link: '#', title: '2 günde Bodrum' ,userName:"Adela Parkson" },
+		{ image: Project3, ranking: '1', link: '#', title: 'Günübirlik Bodrum' ,userName:"Adela Parkson" },
+		{ image: Project1, ranking: '3', link: '#', title: '3 günlük Bodrum tatili' ,userName:"Adela Parkson" },
+		{ image: Project2, ranking: '2', link: '#', title: '2 günde Bodrum' ,userName:"Adela Parkson" },
+		{ image: Project3, ranking: '1', link: '#', title: 'Günübirlik Bodrum' ,userName:"Adela Parkson" },
+		{ image: Project1, ranking: '3', link: '#', title: '3 günlük Bodrum tatili' ,userName:"Adela Parkson" },
+	
+		
+		// Add more projects here...
+	];
+	const chunkSize = 10;
+	const chunkedProjects = Array.from({ length: Math.ceil(projects.length / chunkSize) }, (_, index) =>
+		projects.slice(index * chunkSize, (index + 1) * chunkSize)
+	);
+	const [currentPage, setCurrentPage] = useState(0);
+
+	const handleLoadMore = () => {
+
+		setCurrentPage((prev) => prev + 1);
+	};
+	const CustomGrid = styled.div`
+		@media screen and (min-width: 960px) {
+			.css-zvfk7x {
+				grid-template-columns: 1fr !important;
+			}
+		}
+		@media screen and (min-width: 768px) {
+			.css-zvfk7x {
+				grid-template-columns: 1fr !important;
+			}
+		}
+	`;
 	return (
-		<Card mb={{ base: '0px', '2xl': '20px' }} {...rest}>
-			<Text color={textColorPrimary} fontWeight='bold' fontSize='2xl' mt='10px' mb='4px'>
-				All projects
-			</Text>
-			<Text color={textColorSecondary} fontSize='md' me='26px' mb='40px'>
-				Here you can find more details about your projects. Keep you user engaged by providing meaningful
-				information.
-			</Text>
-			<Project
-				boxShadow={cardShadow}
-				mb='20px'
-				image={Project1}
-				ranking='1'
-				link='#'
-				title='Technology behind the Blockchain'
-			/>
-			<Project
-				boxShadow={cardShadow}
-				mb='20px'
-				image={Project2}
-				ranking='2'
-				link='#'
-				title='Greatest way to a good Economy'
-			/>
-			<Project
-				boxShadow={cardShadow}
-				image={Project3}
-				ranking='3'
-				link='#'
-				title='Most essential tips for Burnout'
-			/>
-		</Card>
+		<div>
+				<TopicHeader title='Bodrum' />
+			
+				{chunkedProjects &&
+					chunkedProjects
+						.slice(0, currentPage + 1)
+						.flat()
+						.slice(0, (currentPage + 1) * 10)
+						.map((project, index) => (
+							<Project mb='10px' key={index} {...project} />
+						))}
+				{currentPage + 1 < chunkedProjects.length && (
+					<Text
+						color={textColorSecondary}
+						fontSize='sm'
+						mt='20px'
+						mb='10px'
+						textAlign='center'
+						onClick={handleLoadMore}
+						cursor='pointer'
+					>
+						Load more
+					</Text>
+				)}
+			
+			</div>
 	);
 }
